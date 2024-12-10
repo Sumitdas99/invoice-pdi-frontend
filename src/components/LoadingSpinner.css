@@ -1,0 +1,37 @@
+/* Container for centering */
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* Full-screen height */
+  color: #ffc50c;
+}
+
+/* Spinner animation */
+.spinner {
+  width: 70px;
+  height: 70px;
+  border: 5px solid #ffc50c;
+  border-top: 5px solid #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Text style */
+.loading-text {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Keyframes for the spinner */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
