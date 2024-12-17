@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   ResetPassword,
   ForgotPassword,
@@ -8,45 +8,34 @@ import {
   NotFound,
   Home,
   BillingEditStatus,
-} from "./pages/index";
-import { Toaster } from "react-hot-toast";
-import { updateUser } from "./features/authSlice";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { UserLayout, PublicLayout, AdminLayout } from "./Layouts";
-import Dashboard from "./pages/Dashboard";
+} from './pages/index';
+import { Toaster } from 'react-hot-toast';
+import { updateUser } from './features/authSlice';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { UserLayout, PublicLayout, AdminLayout } from './Layouts';
+import Dashboard from './pages/Dashboard';
 import {
   AllocationDetails,
   CreateUser,
   LoadingSpinner,
-} from "./components/index";
-import CreateInvoice from "./components/CreateInvoice";
-import AllocateServiceRequest from "./components/AllocateServiceRequest";
-import ShowUsers from "./components/ShowUsers";
-import ServiceRequestDetails from "./components/ServiceRequestDetails";
-import ManagerLayout from "./Layouts/ManagerLayout";
-import Manager from "./pages/Manager";
-import SpcLayout from "./Layouts/SpcLayout";
-import Spc from "./pages/Spc";
-import AllRequests from "./components/AllRequests";
-import StatusDataPage from "./pages/StatusDataPage";
-import CommonLayout from "./Layouts/CommonLayout";
-import CompletedTasks from "./components/CompletedTasks";
-import { AllocatedCall, OngoingCall, PartsDetails } from "./pdi/components";
-import {
-  EquipmentList,
-  ManagerDashboardContent,
-  InspectorDashboardContent,
-  PDI_Call,
-  PI_Call,
-  AllocatedCalls,
-} from "./pdi/pages";
-import PdiManagerLayout from "./pdi/layouts/PdiManagerLayout";
-import PdiInspectorLayout from "./pdi/layouts/PdiInspectorLayout";
+} from './components/index';
+import CreateInvoice from './components/CreateInvoice';
+import AllocateServiceRequest from './components/AllocateServiceRequest';
+import ShowUsers from './components/ShowUsers';
+import ServiceRequestDetails from './components/ServiceRequestDetails';
+import ManagerLayout from './Layouts/ManagerLayout';
+import Manager from './pages/Manager';
+import SpcLayout from './Layouts/SpcLayout';
+import Spc from './pages/Spc';
+import AllRequests from './components/AllRequests';
+import StatusDataPage from './pages/StatusDataPage';
+import CommonLayout from './Layouts/CommonLayout';
+import CompletedTasks from './components/CompletedTasks';
 
 function App() {
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user, loading } = useSelector(state => state.auth);
 
   useEffect(() => {
     // dispatch(updateUser());
@@ -58,9 +47,9 @@ function App() {
         position="bottom-right"
         toastOptions={{
           style: {
-            padding: "8px",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-            borderRadius: "4px",
+            padding: '8px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            borderRadius: '4px',
           },
         }}
       />
@@ -118,19 +107,6 @@ function App() {
 
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="reset-password" element={<ResetPassword />} />
-        </Route>
-        <Route path="/inspector" element={<PdiInspectorLayout />}>
-          <Route index element={<InspectorDashboardContent />} />
-          <Route path="allocated-call" element={<AllocatedCall />} />
-          <Route path="ongoing-call" element={<OngoingCall />} />
-          <Route path="parts-details" element={<PartsDetails />} />
-        </Route>
-        <Route path="/manager" element={<PdiManagerLayout />}>
-          <Route index element={<ManagerDashboardContent />} />
-          <Route path="allocated-calls" element={<AllocatedCalls />} />
-          <Route path="equipment-list" element={<EquipmentList />} />
-          <Route path="pdi-call" element={<PDI_Call />} />
-          <Route path="pi-call" element={<PI_Call />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

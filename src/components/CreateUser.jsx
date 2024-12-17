@@ -8,9 +8,7 @@ import { fetchUsers } from '../features/authSlice';
 const CreateUser = () => {
   const dispatch = useDispatch();
   const [selectedRoles, setSelectedRoles] = useState([]);
-  console.log('🚀 ~ CreateUser ~ selectedRoles:', selectedRoles);
   const { users, loading } = useSelector(state => state.auth);
-  console.log('🚀 ~ CreateUser ~ users:', users);
   const [emailError, setEmailError] = useState('');
 
   const {
@@ -31,7 +29,7 @@ const CreateUser = () => {
   useEffect(() => {
     if (email && users.length > 0) {
       // Check if the email already exists in the fetched users
-      const isEmailTaken = users.some(user => user.email === email);
+      const isEmailTaken = users.some(user => user?.email === email);
       setEmailError(isEmailTaken ? 'Email is already used' : '');
     } else {
       setEmailError('');
@@ -201,8 +199,6 @@ const CreateUser = () => {
             <option value="salesUser">Sales User</option>
             <option value="billingManager">Billing Manager</option>
             <option value="billingAgent">Billing Agent</option>
-            <option value="manager">C&LManager</option>
-            <option value="inspector">Inspector</option>
           </select>
         </div>
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  getFromInstance2,
-  deleteFromInstance2,
-  putToInstance2,
-} from '../services/ApiEndpoint'; // Assume `putToInstance2` for update requests
+  getFromInstance1,
+  deleteFromInstance1,
+  putToInstance1,
+} from '../services/ApiEndpoint'; // Assume `putToInstance1` for update requests
 import { MdDelete, MdEdit, MdClose } from 'react-icons/md';
 import { AiOutlineCopy } from 'react-icons/ai';
 import { fetchUsers } from '../features/authSlice'; // Adjust the path as necessary
@@ -53,7 +53,7 @@ const ShowUsers = () => {
 
   const handleDeleteUser = async userId => {
     try {
-      await deleteFromInstance2(`/api/v1/user/${userId}`);
+      await deleteFromInstance1(`/api/v1/user/${userId}`);
       alert('User deleted successfully.');
       dispatch(fetchUsers());
     } catch (error) {
@@ -63,7 +63,7 @@ const ShowUsers = () => {
 
   const handleSave = async userId => {
     try {
-      await putToInstance2(`/api/v1/user/${userId}`, {
+      await putToInstance1(`/api/v1/user/${userId}`, {
         fullName: updatedName,
         role: updatedRoles,
         employeeId: updatedEmployeeId,
@@ -123,11 +123,25 @@ const ShowUsers = () => {
     return sortedUsers;
   }, [users, sortConfig]);
 
-  const filteredUsers = sortedUsers.filter(user =>
-    Object.values(user).some(val =>
-      val.toString().toLowerCase().includes(search.toLowerCase())
-    )
-  );
+  const filteredUsers = sortedUsers.filter(user => {
+    if (user) {
+      return (
+        (user.fullName &&
+          user.fullName.toLowerCase().includes(search.toLowerCase())) ||
+        (user.email &&
+          user.email.toLowerCase().includes(search.toLowerCase())) ||
+        (user.employeeId &&
+          user.employeeId.toLowerCase().includes(search.toLowerCase())) ||
+        (user.phone &&
+          user.phone.toLowerCase().includes(search.toLowerCase())) ||
+        (Array.isArray(user.role) &&
+          user.role.some(role =>
+            role.toLowerCase().includes(search.toLowerCase())
+          ))
+      );
+    }
+    return false; // Return false if user is not valid
+  });
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -266,17 +280,13 @@ const ShowUsers = () => {
                           Add Role
                         </option>
 
-                        {[
-                          'salesUser',
-                          'billingManager',
-                          'billingAgent',
-                          'C&LManager',
-                          'inspector',
-                        ].map(role => (
-                          <option key={role} value={role}>
-                            {role}
-                          </option>
-                        ))}
+                        {['salesUser', 'billingManager', 'billingAgent'].map(
+                          role => (
+                            <option key={role} value={role}>
+                              {role}
+                            </option>
+                          )
+                        )}
                       </select>
                     </div>
                   ) : Array.isArray(user.role) ? (
@@ -318,6 +328,44 @@ const ShowUsers = () => {
             ))}
           </tbody>
         </table>
+        <div className="pagination mt-4 flex justify-center">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+            className="px-3 py-1 mx-1 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          {Array.from({ length: Math.min(5, totalPages) }, (_, index) => {
+            // Calculate the range of pages to show
+            const startPage = Math.max(
+              1,
+              Math.min(totalPages - 4, currentPage - 2)
+            ); // Ensures a maximum of 5 pages, starts near the current page
+            const page = startPage + index;
+
+            return (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-3 py-1 mx-1 ${
+                  currentPage === page
+                    ? 'bg-brandYellow text-white'
+                    : 'bg-gray-300'
+                } rounded`}
+              >
+                {page}
+              </button>
+            );
+          })}
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+            className="px-3 py-1 mx-1 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

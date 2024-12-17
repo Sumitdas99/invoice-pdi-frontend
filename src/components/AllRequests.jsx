@@ -16,12 +16,14 @@ import ServiceRequestDetails from './ServiceRequestDetails';
 import SideBar from './SideBar';
 import { fetchInvoices, fetchAllEmails } from '../features/serviceRequestSlice';
 import { updateUser } from '../features/authSlice';
+import LoadingSpinner from './LoadingSpinner';
 
 const AllRequests = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { emailList, invoices, loading } = useSelector(
     state => state.serviceRequest
   );
+  console.log('🚀 ~ AllRequests ~ invoices:', invoices);
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.auth);
   const [searchTerm, setSearchTerm] = useState('');
@@ -100,8 +102,13 @@ const AllRequests = () => {
       invoice.billingEditStatus === 'OnHold' ||
       invoice.billingEditStatus === 'Rejected'
     ) {
-      toast.error('Cannot allocate invoices with status OnHold or Rejected');
+      toast.error(
+        'Cannot allocate billing requests with status OnHold or Rejected'
+      );
       return;
+    }
+    if (user.role.includes('salesUser') || user.role.includes('billingAgent')) {
+      toast.error('you are not allowed to allocate');
     }
     setSelectedInvoice(invoice);
     setShowSidebar(true);
@@ -211,7 +218,6 @@ const AllRequests = () => {
         toast.error('Failed to assign email.');
       }
     } catch (error) {
-      console.log('🚀 ~ handleSubmit ~ error:', error);
       toast.error(`Error assigning email: ${error.message}`);
     }
   };
@@ -223,7 +229,6 @@ const AllRequests = () => {
     // Fetch each file and add it to the zip
     const fetchFilePromises = fileNames.map(async fileName => {
       const fileUrl = `${baseUrl}${fileName}`;
-      console.log('Fetching file:', fileUrl);
 
       try {
         const response = await fetch(fileUrl);
@@ -257,7 +262,7 @@ const AllRequests = () => {
       </div>
       <div className=" w-[100%] overflow-x-scroll custom-scrollbar">
         {loading ? (
-          <p className="text-gray-700">Loading invoices...</p>
+          <LoadingSpinner />
         ) : (
           <table className="w-full  bg-brandYellow  select-none text-sm">
             <thead>
@@ -347,17 +352,15 @@ const AllRequests = () => {
                               View Details
                             </span>
                           </span>
-                          {user?.role !== 'salesUser' && (
-                            <span className="relative group">
-                              <MdAssignmentAdd
-                                onClick={() => openRightSidebar(invoice)}
-                                className="text-xl cursor-pointer"
-                              />
-                              <span className="absolute  z-50 left-1/2 transform -translate-x-1/2 -translate-y-11 w-max px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                Allocate
-                              </span>
+                          <span className="relative group">
+                            <MdAssignmentAdd
+                              onClick={() => openRightSidebar(invoice)}
+                              className="text-xl cursor-pointer"
+                            />
+                            <span className="absolute  z-50 left-1/2 transform -translate-x-1/2 -translate-y-11 w-max px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                              Allocate
                             </span>
-                          )}
+                          </span>
                         </div>
                       </button>
                     </td>
@@ -405,19 +408,21 @@ const AllRequests = () => {
 
       {/* Right Sidebar */}
       <div>
-        {showSidebar && (
-          <SideBar
-            closeSidebar={closeSidebar}
-            handleInputChange={handleInputChange}
-            handleRemarksChange={handleRemarksChange}
-            selectedInvoice={selectedInvoice}
-            suggestions={suggestions}
-            handleSubmit={handleSubmit}
-            handleSuggestionClick={handleSuggestionClick}
-            inputValue={inputValue}
-            clearInput={clearInput}
-          />
-        )}
+        {showSidebar &&
+          !user?.role.includes('salesUser') &&
+          !user?.role.includes('billingAgent') && (
+            <SideBar
+              closeSidebar={closeSidebar}
+              handleInputChange={handleInputChange}
+              handleRemarksChange={handleRemarksChange}
+              selectedInvoice={selectedInvoice}
+              suggestions={suggestions}
+              handleSubmit={handleSubmit}
+              handleSuggestionClick={handleSuggestionClick}
+              inputValue={inputValue}
+              clearInput={clearInput}
+            />
+          )}
       </div>
     </div>
   );

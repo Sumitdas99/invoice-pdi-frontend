@@ -11,9 +11,9 @@ export const fetchInvoices = createAsyncThunk(
   'invoices/fetchInvoices',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getFromInstance1('api/v1/all_display-report');
+      const response = await getFromInstance1('/api/v1/display-report');
       if (response.status === 200) {
-        return response.data?.serviceRequests || [];
+        return response.data?.billingRequests || [];
       } else {
         throw new Error('Failed to fetch invoices');
       }
@@ -26,8 +26,8 @@ export const fetchAllEmails = createAsyncThunk(
   'emails/fetchAllEmails',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getFromInstance1('/api/v1/user/names');
-      return response.data?.empName; // Assuming response.data.empList is the list of emails
+      const response = await getFromInstance1('/api/v1/all-billing-agent');
+      return response.data?.empData; // Assuming response.data.empList is the list of emails
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || 'Failed to fetch emails'
@@ -39,8 +39,8 @@ export const fetchAllQuotationNo = createAsyncThunk(
   'emails/fetchAllQuotationNo',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getFromInstance1('/api/v1/get-quotationNo');
-      return response.data?.data; // Assuming response.data.empList is the list of emails
+      const response = await getFromInstance1('/api/v1/fetch-quote-status');
+      return response.data?.quote; // Assuming response.data.empList is the list of emails
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || 'Failed to fetch emails'
@@ -56,8 +56,7 @@ export const fetchServiceRequest = createAsyncThunk(
       const response = await getFromInstance1(
         `/api/v1/display-report?billingRequestId=${billingRequestId}`
       );
-      console.log('🚀 ~ response:', response);
-      return response.data?.displayReport; // Extract displayReport from the response
+      return response.data?.billingRequests; // Extract displayReport from the response
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || error.message
@@ -76,7 +75,6 @@ export const updateServiceRequestStatus = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      console.log('🚀 ~ error:', error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -119,14 +117,12 @@ export const fetchServiceRequestByStatus = createAsyncThunk(
 export const revokeBillingEditStatus = createAsyncThunk(
   'serviceRequest/revokeBillingEditStatus',
   async (billingRequestId, { rejectWithValue }) => {
-    console.log('🚀 ~ billingRequestId:', billingRequestId);
     try {
       const response = await putToInstance1(
         '/api/user/v1/revokeBillingEditStatus',
         billingRequestId
       );
 
-      console.log('🚀 ~ response:', response);
       if (response.status === 200) {
         return response.data;
       } else {
@@ -162,7 +158,6 @@ const serviceRequestSlice = createSlice({
     setSelectedZone: (state, action) => {
       // Set the selected zone from the action payload
       state.selectedZone = action.payload;
-      console.log('🚀 ~ action.payload:', action.payload);
 
       // Filter the invoices based on the selected zone
       const filteredInvoices =

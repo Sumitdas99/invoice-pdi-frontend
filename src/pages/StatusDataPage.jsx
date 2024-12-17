@@ -40,10 +40,10 @@ const StatusDataPage = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
-
   const [inputValue, setInputValue] = useState([
     { name: '', email: '', remarks: '' },
   ]);
+
   const [suggestions, setSuggestions] = useState([]);
   const itemsPerPage = 12;
 
@@ -220,11 +220,11 @@ const StatusDataPage = () => {
 
   const handleDownloadZip = async (fileNames, srID) => {
     const zip = new JSZip();
-    const baseUrl = 'http://localhost:5000/uploads/';
+    const baseUrl = import.meta.env.VITE_BASE_URL;
 
     // Fetch each file and add it to the zip
     const fetchFilePromises = fileNames.map(async fileName => {
-      const fileUrl = `${baseUrl}${fileName}`;
+      const fileUrl = `${baseUrl}/uploads/${fileName}`;
       console.log('Fetching file:', fileUrl);
 
       try {

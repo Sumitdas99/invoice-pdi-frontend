@@ -21,17 +21,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './src/features/authSlice';
 import serviceRequestReducer from './src/features/serviceRequestSlice';
-import pdiReducer from './src/pdi/features/pdiSlice';
-import piReducer from './src/pdi/features/piSlice';
-import pdiUserReducer from './src/pdi/features/pdiUserSlice';
 
 // Configure the store without persist
 export const store = configureStore({
   reducer: {
     auth: authReducer, // Use the authReducer directly without persistence
     serviceRequest: serviceRequestReducer,
-    pdi: pdiReducer,
-    pi: piReducer,
-    pdiUser: pdiUserReducer,
   },
 });

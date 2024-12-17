@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getFromInstance2, postToInstance2 } from '../services/ApiEndpoint';
+import { getFromInstance1, postToInstance1 } from '../services/ApiEndpoint';
 import toast from 'react-hot-toast';
 
 // Helper function to delete a cookie by name
@@ -25,7 +25,7 @@ export const createUser = createAsyncThunk(
   'user/createUser',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await postToInstance2(
+      const response = await postToInstance1(
         '/api/v1/user/createUser',
         userData
       );
@@ -42,7 +42,7 @@ export const createUser = createAsyncThunk(
 // Async thunk for updating the user
 export const updateUser = createAsyncThunk('auth/updateUser', async () => {
   try {
-    const response = await getFromInstance2('/api/auth/checkUser');
+    const response = await getFromInstance1('/api/auth/checkUser');
     console.log('🚀 ~ updateUser ~ response:', response);
     return response.data;
   } catch (error) {
@@ -54,7 +54,7 @@ export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getFromInstance2('/api/v1/user');
+      const response = await getFromInstance1('/api/v1/user');
       console.log('🚀 ~ response:', response);
       return response.data; // This will be the payload on success
     } catch (error) {

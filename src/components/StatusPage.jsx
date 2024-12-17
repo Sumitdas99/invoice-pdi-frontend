@@ -13,7 +13,6 @@ const StatusPage = () => {
   const { loading, statusCounts, selectedZone, invoices } = useSelector(
     state => state.serviceRequest
   );
-  console.log('🚀 ~ StatusPage ~ statusCounts:', statusCounts);
   const zones = [
     'All',
     'Zone1',
@@ -33,7 +32,7 @@ const StatusPage = () => {
 
   useEffect(() => {
     dispatch(fetchInvoices());
-  }, [dispatch]);
+  }, []);
 
   const handleCardClick = status => {
     navigate(`/status/${status}`);

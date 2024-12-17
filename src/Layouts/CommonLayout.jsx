@@ -8,7 +8,14 @@ const CommonLayout = () => {
   const { user } = useSelector(state => state.auth);
 
   useEffect(() => {
-    if (!user) {
+    if (
+      !user ||
+      !user.role ||
+      (!user.role.includes('salesUser') &&
+        !user.role.includes('admin') &&
+        !user.role.includes('billingManager') &&
+        !user.role.includes('billingAgent'))
+    ) {
       navigate('/login');
     }
   }, [navigate, user]);

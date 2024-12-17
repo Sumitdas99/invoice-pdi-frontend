@@ -8,7 +8,7 @@ const UserLayout = () => {
   const { user } = useSelector(state => state.auth);
 
   useEffect(() => {
-    if (!user || user.role[0] !== 'salesUser') {
+    if (!user || !user.role.includes('salesUser')) {
       navigate('/login');
     }
   }, [user, navigate]);

@@ -193,9 +193,9 @@ const CreateInvoice = () => {
             {errors.quotationNo && (
               <p className="text-red-500 text-sm">{errors.quotationNo}</p>
             )}
-            {filteredSuggestions.length > 0 && (
+            {filteredSuggestions?.length > 0 && (
               <ul className="absolute z-10 bg-white dark:bg-gray-700 border dark:border-gray-600 border-gray-300 rounded-[5px] mt-1 w-full max-h-32  overflow-y-auto custom-scrollbar shadow-lg">
-                {filteredSuggestions.map((suggestion, index) => (
+                {filteredSuggestions?.map((suggestion, index) => (
                   <li
                     key={index}
                     onClick={() => {
@@ -205,15 +205,6 @@ const CreateInvoice = () => {
                     className="px-2 py-1 cursor-pointer hover:bg-gray-200 border-b text-sm  dark:hover:bg-gray-600"
                   >
                     {suggestion.quotationNo}
-                    {suggestion.quotationCreated ? (
-                      <span className="text-white text-xs ml-2 px-2  bg-red-500 rounded-lg">
-                        already used
-                      </span>
-                    ) : (
-                      <span className="text-white bg-green-500  text-xs ml-2 px-2  rounded-lg">
-                        available
-                      </span>
-                    )}
                   </li>
                 ))}
               </ul>

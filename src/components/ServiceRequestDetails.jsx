@@ -12,6 +12,7 @@ import {
   updateServiceRequestStatus,
 } from '../features/serviceRequestSlice';
 import { Tooltip } from 'react-tooltip';
+import LoadingSpinner from './LoadingSpinner';
 
 const ServiceRequestDetails = ({ selectedInvoice }) => {
   const dispatch = useDispatch();
@@ -20,7 +21,6 @@ const ServiceRequestDetails = ({ selectedInvoice }) => {
   const { details: invoiceData, loading } = useSelector(
     state => state.serviceRequest
   );
-  console.log('🚀 ~ ServiceRequestDetails ~ invoiceData:', invoiceData);
 
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
   const [isVisible, setIsVisible] = useState(false);

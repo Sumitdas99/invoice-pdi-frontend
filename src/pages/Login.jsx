@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { postToInstance2, postToInstance3 } from '../services/ApiEndpoint';
+import { postToInstance1 } from '../services/ApiEndpoint';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -43,7 +43,7 @@ const Login = () => {
   const handleEmailSubmit = async data => {
     setLoading(true);
     try {
-      const response = await postToInstance2('/api/v1/auth/send-otp', {
+      const response = await postToInstance1('/api/v1/auth/send-otp', {
         email: data.email,
       });
       if (response?.status === 200) {
@@ -63,7 +63,7 @@ const Login = () => {
 
   const handleOtpSubmit = async data => {
     try {
-      const response = await postToInstance2(`/api/v1/auth/verify-otp`, {
+      const response = await postToInstance1(`/api/v1/auth/verify-otp`, {
         email,
         otp: data.otp,
       });
@@ -101,7 +101,7 @@ const Login = () => {
       <div className="absolute inset-0 bg-black bg-opacity-50" />
       <div className="relative z-10 max-w-lg w-full p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-blue-600">PDI-Invoice</h1>
+          <h1 className="text-4xl font-bold text-blue-600">Invoice</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-300">
             {otpSent
               ? 'Enter the OTP sent to your email'

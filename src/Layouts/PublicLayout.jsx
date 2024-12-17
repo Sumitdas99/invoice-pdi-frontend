@@ -14,10 +14,6 @@ const PublicLayout = () => {
         navigate('/billingManager');
       } else if (user.role.includes('billingAgent')) {
         navigate('/billingAgent');
-      } else if (user.role.includes('manager')) {
-        navigate('/manager');
-      } else if (user.role.includes('inspector')) {
-        navigate('/inspector');
       } else {
         navigate('/');
       }

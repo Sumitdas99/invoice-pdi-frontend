@@ -218,11 +218,11 @@ const BillingEditStatus = () => {
 
   const handleDownloadZip = async (fileNames, srID) => {
     const zip = new JSZip();
-    const baseUrl = 'http://localhost:5000/uploads/';
+    const baseUrl = import.meta.env.VITE_BASE_URL;
 
     // Fetch each file and add it to the zip
     const fetchFilePromises = fileNames.map(async fileName => {
-      const fileUrl = `${baseUrl}${fileName}`;
+      const fileUrl = `${baseUrl}/uploads/${fileName}`;
       console.log('Fetching file:', fileUrl);
 
       try {
@@ -241,7 +241,6 @@ const BillingEditStatus = () => {
     zip.generateAsync({ type: 'blob' }).then(content => {
       const fileName = `${srID}.zip`; // Fallback to 'default.zip' if no ID
       saveAs(content, fileName);
-      console.log('🚀 ~ zip.generateAsync ~ fileName:', fileName);
     });
   };
 

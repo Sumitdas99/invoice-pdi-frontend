@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { postToInstance2 } from '../services/ApiEndpoint';
+import { postToInstance1 } from '../services/ApiEndpoint';
 import { toast } from 'react-hot-toast';
 
 // Zod validation schema
@@ -53,7 +53,7 @@ const Register = () => {
     e.preventDefault();
     const { cpassword, ...filteredData } = data;
     try {
-      const response = await postToInstance2(
+      const response = await postToInstance1(
         '/api/auth/register',
         filteredData
       );

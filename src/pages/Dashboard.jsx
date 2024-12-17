@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FiMenu, FiX, FiUser, FiSun, FiMoon } from 'react-icons/fi';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { postToInstance2 } from '../services/ApiEndpoint';
+import { postToInstance1 } from '../services/ApiEndpoint';
 import { toast } from 'react-hot-toast';
 import { RiLogoutCircleRLine } from 'react-icons/ri';
 import { FaHome } from 'react-icons/fa';
@@ -198,12 +198,6 @@ const Dashboard = () => {
                 <Link to="/billed" className={linkClasses('/billed')}>
                   <RiBillFill className="inline-block text-md mr-2" />
                   Billed
-                </Link>
-              </li>
-              <li className="">
-                <Link to="/profile" className={linkClasses('/profile')}>
-                  <CgProfile className="inline-block text-md mr-2" />
-                  Profile
                 </Link>
               </li>
             </ul>
